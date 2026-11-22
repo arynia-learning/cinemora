@@ -4,146 +4,118 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CINEMORA - Worldwide Entertainment</title>
+<title>CINEMORA | Stories Without Boundaries</title>
+<meta name="description" content="Discover movies and series from around the world with CINEMORA.">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#090909;color:white;font-family:Arial,sans-serif}
-header{padding:22px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #333}
-.logo{font-size:26px;font-weight:bold;letter-spacing:3px;color:#d5ad55}
-nav a{color:white;text-decoration:none;margin:0 10px;font-size:13px}
-button{cursor:pointer;padding:12px 18px;border:0;border-radius:4px;font-weight:bold}
-.join{background:#d5ad55;color:#111}
-.hero{padding:85px 7%;min-height:390px;background:linear-gradient(90deg,#090909,#17120b)}
-.hero small{color:#d5ad55;letter-spacing:4px}
-.hero h1{font-size:55px;margin:20px 0;line-height:1.1}
-.hero p{color:#ccc;line-height:1.7;max-width:450px}
-.gold{background:#d5ad55;color:#111;margin-top:25px}
-main{padding:35px 6%}
-.section{margin-bottom:45px}
-h2{margin-bottom:20px;font-size:22px}
-h2 span{color:#d5ad55}
-.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:15px}
-.movie{min-width:0}
-.poster{height:210px;background:linear-gradient(145deg,#554025,#171717);border:1px solid #49391e;border-radius:7px;display:flex;align-items:end;padding:15px;font-size:20px;font-weight:bold}
-.movie h3{font-size:14px;margin-top:10px}
-.movie p{font-size:11px;color:#aaa;margin-top:5px}
-.search{width:100%;max-width:350px;padding:14px;background:#191919;color:white;border:1px solid #555;border-radius:5px;margin-bottom:30px}
-footer{padding:30px 6%;border-top:1px solid #333;color:#aaa}
-@media(max-width:700px){
-nav{display:none}
-.cards{grid-template-columns:repeat(2,1fr)}
-.hero h1{font-size:42px}
-.poster{height:190px}
-}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#090909;color:#fff;font-family:Arial,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 6%;border-bottom:1px solid #292929;flex-wrap:wrap;gap:15px}
+.logo{font-size:27px;font-weight:900;letter-spacing:3px;color:#d6ad58}
+nav{display:flex;gap:20px;flex-wrap:wrap}
+nav a{color:#ddd;text-decoration:none;font-size:13px}
+nav a:hover{color:#d6ad58}
+.join{background:#d6ad58;color:#090909;padding:11px 18px;border-radius:4px;text-decoration:none;font-weight:bold;font-size:13px}
+.hero{padding:90px 7%;background:linear-gradient(90deg,#090909 10%,#17130d 65%,#090909);min-height:390px;display:flex;flex-direction:column;justify-content:center}
+.tag{color:#d6ad58;letter-spacing:4px;font-size:12px;margin-bottom:18px}
+.hero h1{font-size:clamp(38px,7vw,68px);max-width:700px;line-height:1.08;margin-bottom:18px}
+.hero p{color:#bbb;max-width:520px;line-height:1.7;margin-bottom:25px}
+.search-area{padding:25px 6%;display:flex;gap:10px}
+.search-area input{width:100%;padding:15px;background:#171717;border:1px solid #444;border-radius:5px;color:white;font-size:15px}
+.section{padding:25px 6%}
+.section h2{font-size:21px;margin-bottom:18px}
+.gold{color:#d6ad58}
+.categories{display:flex;gap:10px;flex-wrap:wrap}
+.category{border:1px solid #494033;color:#ddd;padding:11px 17px;border-radius:22px;font-size:13px}
+.movie-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:15px}
+.movie{background:#171717;border:1px solid #292929;border-radius:7px;overflow:hidden;min-width:0}
+.poster{height:175px;background:linear-gradient(145deg,#292116,#111);display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;color:#d6ad58;font-weight:bold;font-size:17px}
+.movie p{padding:12px;font-size:13px;color:#eee}
+.movie small{display:block;color:#999;margin-top:5px}
+footer{border-top:1px solid #292929;padding:30px 6%;text-align:center;color:#888;font-size:12px;margin-top:40px}
+@media(max-width:600px){header{padding:17px 5%}.hero{padding:65px 6%;min-height:350px}nav{gap:12px}.section{padding:22px 5%}.movie-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
-
+</body>
+ 
 <header>
-<div class="logo">CINEMORA</div>
-<nav>
-<a href="#home">Home</a>
-<a href="#highlights">Highlights</a>
-<a href="#africa">African Cinema</a>
-<a href="#series">Series</a>
-</nav>
-<button class="join">JOIN FREE</button>
+  <div class="logo">CINEMORA</div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#movies">Movies</a>
+    <a href="#series">TV Series</a>
+    <a href="#countries">Countries</a>
+    <a href="#documentaries">Documentaries</a>
+  </nav>
+  <a class="join" href="#join">JOIN FREE</a>
 </header>
 
 <section class="hero" id="home">
-<small>A WORLD OF STORIES</small>
-<h1>Stories Without<br>Boundaries.</h1>
-<p>Discover movies and television series from Africa and every corner of the world. Your next favourite story starts here.</p>
-<button class="gold" onclick="document.getElementById('highlights').scrollIntoView({behavior:'smooth'})">EXPLORE CINEMORA</button>
+  <div class="tag">YOUR WORLD. YOUR STORIES.</div>
+  <h1>Stories Without Boundaries.</h1>
+  <p>Discover movies, television series, animation and documentaries from Africa and every corner of the world.</p>
+  <a class="join" href="#movies">EXPLORE CINEMORA</a>
 </section>
 
-<main>
-<input class="search" id="search" placeholder="Search movies and series..." oninput="searchMovies()">
+<div class="search-area">
+  <input id="search" type="search" placeholder="Search movies, series, countries or genres..." oninput="searchMovies()">
+</div>
 
-<section class="section" id="highlights">
-<h2>Worldwide <span>Highlights</span></h2>
-<div class="cards" id="highlightCards"></div>
+<section class="section" id="countries">
+  <h2>Explore by <span class="gold">Category</span></h2>
+  <div class="categories">
+    <span class="category">African Cinema</span>
+    <span class="category">Hollywood</span>
+    <span class="category">Bollywood</span>
+    <span class="category">Korean</span>
+    <span class="category">Chinese</span>
+    <span class="category">Japanese</span>
+    <span class="category">French</span>
+    <span class="category">Documentaries</span>
+    <span class="category">Cartoons & Anime</span>
+  </div>
 </section>
 
-<section class="section" id="africa">
-<h2>African <span>Cinema</span></h2>
-<div class="cards" id="africaCards"></div>
+<section class="section" id="movies">
+  <h2>Discover <span class="gold">Worldwide Entertainment</span></h2>
+  <div class="movie-grid" id="movieGrid">
+    <div class="movie"><div class="poster">CINEMORA</div><p>Worldwide Highlights<small>Discover stories from everywhere</small></p></div>
+    <div class="movie"><div class="poster">AFRICAN CINEMA</div><p>African Stories<small>Movies from across Africa</small></p></div>
+    <div class="movie"><div class="poster">ASIAN CINEMA</div><p>Asian Entertainment<small>Explore Asian films and series</small></p></div>
+    <div class="movie"><div class="poster">HOLLYWOOD</div><p>Hollywood Collection<small>International entertainment</small></p></div>
+  </div>
 </section>
 
 <section class="section" id="series">
-<h2>Popular <span>Series</span></h2>
-<div class="cards" id="seriesCards"></div>
+  <h2>Popular <span class="gold">TV Series</span></h2>
+  <p style="color:#aaa">Explore drama, crime, romance, action, thrillers and more.</p>
 </section>
 
-<section class="section">
-<h2>Explore by <span>Genre</span></h2>
-<div class="genres">
-<button>Action</button>
-<button>Horror</button>
-<button>Crime</button>
-<button>Romance</button>
-<button>Comedy</button>
-<button>Drama</button>
-<button>Documentary</button>
-<button>Animation & Anime</button>
-<button>Thriller</button>
-<button>Adventure</button>
-</div>
+<section class="section" id="documentaries">
+  <h2>Documentaries <span class="gold">& Real Stories</span></h2>
+  <p style="color:#aaa">Discover stories about people, sports, history, nature and real-life events.</p>
 </section>
-</main>
+
+<section class="section" id="join">
+  <h2>Welcome to <span class="gold">CINEMORA</span></h2>
+  <p style="color:#aaa">Free registration and viewing features will be introduced when the necessary account and streaming systems are connected.</p>
+</section>
 
 <footer>
-<strong style="color:#d5ad55;letter-spacing:3px">CINEMORA</strong>
-<p>A world of entertainment, brought together.</p>
-<p>Discover stories. Explore cultures. Enjoy the journey.</p>
-<p>© 2026 CINEMORA. All rights reserved.</p>
+  <div class="logo">CINEMORA</div>
+  <p style="margin-top:12px">Stories Without Boundaries.</p>
+  <p style="margin-top:8px">© 2026 CINEMORA. All rights reserved.</p>
 </footer>
+  
 
 <script>
-const movies = {
-highlight: [
-["The Gentlemen","Crime · International"],
-["John Wick 4","Action · International"],
-["Salaar","Action · India"],
-["Zootopia","Animation · Family"],
-["Drishyam 2","Thriller · India"]
-],
-africa: [
-["Beasts of No Nation","Drama · Africa"],
-["A Tribe Called Judah","Comedy · Nigeria"],
-["Gangs of Lagos","Crime · Nigeria"],
-["To Kill a Monkey","Crime · Ghana"]
-],
-series: [
-["Blood & Water","Drama · South Africa"],
-["Squid Game","Thriller · Korea"],
-["Vagabond","Action · Korea"],
-["Prison Break","Crime · USA"]
-]
-};
-
-function displayMovies(items, elementId) {
-const container = document.getElementById(elementId);
-container.innerHTML = items.map(movie => `
-<div class="movie">
-<div class="poster">${movie[0]}</div>
-<h3>${movie[0]}</h3>
-<p>${movie[1]}</p>
-</div>
-`).join("");
-}
-
-displayMovies(movies.highlight,"highlightCards");
-displayMovies(movies.africa,"africaCards");
-displayMovies(movies.series,"seriesCards");
-
 function searchMovies() {
-const query = document.getElementById("search").value.toLowerCase();
-document.querySelectorAll(".movie").forEach(movie => {
-movie.style.display =
-movie.innerText.toLowerCase().includes(query) ? "" : "none";
-});
+  const input = document.getElementById("search").value.toLowerCase();
+  const movies = document.querySelectorAll(".movie");
+  movies.forEach(movie => {
+    movie.style.display = movie.innerText.toLowerCase().includes(input) ? "" : "none";
+  });
 }
 </script>
-</body>
+ </body>
 </html>
