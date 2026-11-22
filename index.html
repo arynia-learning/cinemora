@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CINEMORA - Worldwide Entertainment</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#090909;color:white;font-family:Arial,sans-serif}
+header{padding:22px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #333}
+.logo{font-size:26px;font-weight:bold;letter-spacing:3px;color:#d5ad55}
+nav a{color:white;text-decoration:none;margin:0 10px;font-size:13px}
+button{cursor:pointer;padding:12px 18px;border:0;border-radius:4px;font-weight:bold}
+.join{background:#d5ad55;color:#111}
+.hero{padding:85px 7%;min-height:390px;background:linear-gradient(90deg,#090909,#17120b)}
+.hero small{color:#d5ad55;letter-spacing:4px}
+.hero h1{font-size:55px;margin:20px 0;line-height:1.1}
+.hero p{color:#ccc;line-height:1.7;max-width:450px}
+.gold{background:#d5ad55;color:#111;margin-top:25px}
+main{padding:35px 6%}
+.section{margin-bottom:45px}
+h2{margin-bottom:20px;font-size:22px}
+h2 span{color:#d5ad55}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:15px}
+.movie{min-width:0}
+.poster{height:210px;background:linear-gradient(145deg,#554025,#171717);border:1px solid #49391e;border-radius:7px;display:flex;align-items:end;padding:15px;font-size:20px;font-weight:bold}
+.movie h3{font-size:14px;margin-top:10px}
+.movie p{font-size:11px;color:#aaa;margin-top:5px}
+.search{width:100%;max-width:350px;padding:14px;background:#191919;color:white;border:1px solid #555;border-radius:5px;margin-bottom:30px}
+footer{padding:30px 6%;border-top:1px solid #333;color:#aaa}
+@media(max-width:700px){
+nav{display:none}
+.cards{grid-template-columns:repeat(2,1fr)}
+.hero h1{font-size:42px}
+.poster{height:190px}
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">CINEMORA</div>
+<nav>
+<a href="#home">Home</a>
+<a href="#highlights">Highlights</a>
+<a href="#africa">African Cinema</a>
+<a href="#series">Series</a>
+</nav>
+<button class="join">JOIN FREE</button>
+</header>
+
+<section class="hero" id="home">
+<small>A WORLD OF STORIES</small>
+<h1>Stories Without<br>Boundaries.</h1>
+<p>Discover movies and television series from Africa and every corner of the world. Your next favourite story starts here.</p>
+<button class="gold" onclick="document.getElementById('highlights').scrollIntoView({behavior:'smooth'})">EXPLORE CINEMORA</button>
+</section>
+
+<main>
+<input class="search" id="search" placeholder="Search movies and series..." oninput="searchMovies()">
+
+<section class="section" id="highlights">
+<h2>Worldwide <span>Highlights</span></h2>
+<div class="cards" id="highlightCards"></div>
+</section>
+
+<section class="section" id="africa">
+<h2>African <span>Cinema</span></h2>
+<div class="cards" id="africaCards"></div>
+</section>
+
+<section class="section" id="series">
+<h2>Popular <span>Series</span></h2>
+<div class="cards" id="seriesCards"></div>
+</section>
+
+<section class="section">
+<h2>Explore by <span>Genre</span></h2>
+<div class="genres">
+<button>Action</button>
+<button>Horror</button>
+<button>Crime</button>
+<button>Romance</button>
+<button>Comedy</button>
+<button>Drama</button>
+<button>Documentary</button>
+<button>Animation & Anime</button>
+<button>Thriller</button>
+<button>Adventure</button>
+</div>
+</section>
+</main>
+
+<footer>
+<strong style="color:#d5ad55;letter-spacing:3px">CINEMORA</strong>
+<p>A world of entertainment, brought together.</p>
+<p>Discover stories. Explore cultures. Enjoy the journey.</p>
+<p>© 2026 CINEMORA. All rights reserved.</p>
+</footer>
+
+<script>
+const movies = {
+highlight: [
+["The Gentlemen","Crime · International"],
+["John Wick 4","Action · International"],
+["Salaar","Action · India"],
+["Zootopia","Animation · Family"],
+["Drishyam 2","Thriller · India"]
+],
+africa: [
+["Beasts of No Nation","Drama · Africa"],
+["A Tribe Called Judah","Comedy · Nigeria"],
+["Gangs of Lagos","Crime · Nigeria"],
+["To Kill a Monkey","Crime · Ghana"]
+],
+series: [
+["Blood & Water","Drama · South Africa"],
+["Squid Game","Thriller · Korea"],
+["Vagabond","Action · Korea"],
+["Prison Break","Crime · USA"]
+]
+};
+
+function displayMovies(items, elementId) {
+const container = document.getElementById(elementId);
+container.innerHTML = items.map(movie => `
+<div class="movie">
+<div class="poster">${movie[0]}</div>
+<h3>${movie[0]}</h3>
+<p>${movie[1]}</p>
+</div>
+`).join("");
+}
+
+displayMovies(movies.highlight,"highlightCards");
+displayMovies(movies.africa,"africaCards");
+displayMovies(movies.series,"seriesCards");
+
+function searchMovies() {
+const query = document.getElementById("search").value.toLowerCase();
+document.querySelectorAll(".movie").forEach(movie => {
+movie.style.display =
+movie.innerText.toLowerCase().includes(query) ? "" : "none";
+});
+}
+</script>
+</body>
+</html>
