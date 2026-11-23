@@ -1366,5 +1366,20 @@ document.querySelectorAll(".category").forEach(button => {
 renderCatalogue();
 
 </script>
+  <!-- CINEMORA SUPABASE CONNECTION -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  if (window.supabase && window.supabase.createClient) {
+    window.cinemoraSupabase = window.supabase.createClient(
+      "https://kpyugkfbkzkuumcpkzkb.supabase.co",
+      "sb_publishable_XcbbBjF7GpTrAwCcX65Bvw_8o2vmlEm"
+    );
+
+    console.log("CINEMORA database connected");
+  } else {
+    console.error("CINEMORA database connection failed");
+  }
+</script>
 </body>
 </html>
