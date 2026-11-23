@@ -739,6 +739,31 @@ function searchMovies() {
 { id: "CIN-0518", title: "The Square", group: "main" },
 { id: "CIN-0519", title: "The White Tiger", group: "main" },
 { id: "CIN-0520", title: "RRR: Behind & Beyond", group: "main" }];
+  const seriesDataById = {
+  "CIN-0013": { type: "series", seasons: 2 },
+  "CIN-0027": { type: "series", seasons: 1 },
+  "CIN-0030": { type: "series", seasons: 4 },
+  "CIN-0053": { type: "series", seasons: 7 },
+  "CIN-0064": { type: "series", seasons: 8 },
+  "CIN-0089": { type: "series", seasons: 4 },
+  "CIN-0090": { type: "series", seasons: 11 },
+  "CIN-0091": { type: "series", seasons: 7 },
+  "CIN-0094": { type: "series", seasons: 5 },
+  "CIN-0108": { type: "series", seasons: 11 },
+  "CIN-0115": { type: "series", seasons: 10 },
+  "CIN-0118": { type: "series", seasons: 4 },
+  "CIN-0114": { type: "series", seasons: 3 },
+  "CIN-0122": { type: "series", seasons: 5 },
+  "CIN-0125": { type: "series", seasons: 4 },
+  "CIN-0127": { type: "series", seasons: 3 },
+  "CIN-0145": { type: "series", seasons: 4 },
+  "CIN-0146": { type: "series", seasons: 6 }
+};
+
+cinemoraTitles.forEach(movie => {
+  const seriesInfo = seriesDataById[movie.id];
+  if (seriesInfo) Object.assign(movie, seriesInfo);
+});
  const movieGrid = document.getElementById("movieGrid");
 const catalogueCategory = document.getElementById("catalogueCategory");
 
@@ -766,7 +791,10 @@ function renderCatalogue() {
     const matchesGroup = category === "all" || movie.group === category;
 
     let matchesExplore = true;
-
+const categoryLabel = document.createElement("p");
+const seriesInfo = movie.type === "series"
+  ? `Season${movie.seasons === 1 ? "" : "s"}: ${movie.seasons}`
+  : "";
     if (activeExploreCategory === "Cartoons & Anime") {
       matchesExplore = movie.group === "animated";
     } else if (activeExploreCategory === "Documentaries") {
