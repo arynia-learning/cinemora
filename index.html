@@ -59,7 +59,31 @@ nav a:hover{color:#d6ad58}
 .movie small{display:block;color:#999;margin-top:5px}
 footer{border-top:1px solid #292929;padding:30px 6%;text-align:center;color:#888;font-size:12px;margin-top:40px}
 @media(max-width:600px){header{padding:17px 5%}.hero{padding:65px 6%;min-height:350px}nav{gap:12px}.section{padding:22px 5%}.movie-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-</style>
+/* CINEMORA CATEGORY BUTTON FIX */
+.categories {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 12px !important;
+  position: relative;
+  z-index: 10;
+}
+
+.categories .category {
+  display: block !important;
+  width: 100% !important;
+  min-height: 70px !important;
+  background: #17130d !important;
+  color: #f5d58a !important;
+  border: 2px solid #d6ad58 !important;
+  font-size: 17px !important;
+  font-weight: bold !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
 </head>
 <body>
 
