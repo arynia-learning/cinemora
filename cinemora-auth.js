@@ -464,16 +464,34 @@
       panel.style.display === "block" ? "none" : "block";
   }
 
-  async function addProfile() {
+    async function addProfile() {
     if (profiles.length >= 5) {
       showMessage("You can have up to 5 profiles on this account.");
       return;
     }
 
-    const name = prompt("Enter the new profile name:");
+    const type = prompt(
+      "Choose profile type:\n1. Kids\n2. Family\n3. Guest\n4. Other"
+    );
+    if (!type) return;
+
+    const choices = {
+      "1": { label: "Kids", emoji: "🧸", kids: true },
+      "2": { label: "Family", emoji: "👨‍👩‍👧", kids: false },
+      "3": { label: "Guest", emoji: "👤", kids: false },
+      "4": { label: "Other", emoji: "🙂", kids: false }
+    };
+
+    const selected = choices[type.trim()];
+    if (!selected) {
+      showMessage("Please choose 1, 2, 3 or 4.");
+      return;
+    }
+
+    const name = prompt("Enter profile name:", selected.label);
     if (!name || !name.trim()) return;
 
-    const emoji = prompt("Choose an avatar emoji:", "👤") || "👤";
+    const emoji = prompt("Choose an avatar emoji:", selected.emoji) || selected.emoji;
 
     const { error } = await supabase
       .from("cinemora_profiles")
@@ -481,7 +499,7 @@
         owner_user_id: currentUser.id,
         name: name.trim(),
         avatar_emoji: emoji,
-        is_kids: name.toLowerCase().includes("kids"),
+        is_kids: selected.kids,
         sort_order: profiles.length + 1
       });
 
