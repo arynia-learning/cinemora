@@ -771,15 +771,104 @@ function searchMovies() {
 
 cinemoraTitles.forEach(movie => {
   const seriesInfo = seriesDataById[movie.id];
-  if (seriesInfo) Object.assign(movie, seriesInfo);
-});
- const movieGrid = document.getElementById("movieGrid");
-const catalogueCategory = document.getElementById("catalogueCategory");
+  if (seriesInfo) Object.assign(movie, 
+const detailsPage = document.getElementById("detailsPage");
+const detailsTitle = document.getElementById("detailsTitle");
+const detailsType = document.getElementById("detailsType");
+const seasonList = document.getElementById("seasonList");
+const episodeList = document.getElementById("episodeList");
+const catalogueControls = document.querySelector(".catalogue-controls");
 
-  const catalogueSearch = document.getElementById("catalogueSearch");
+function closeDetails() {
+  detailsPage.style.display = "none";
+  movieGrid.style.display = "grid";
+  catalogueControls.style.display = "";
+  catalogueCount.style.display = "";
+  episodeList.innerHTML = "";
+}
 
-const catalogueCount = document.getElementById("catalogueCount");
-let activeExploreCategory = "all";
+document.getElementById("backToCatalogue").addEventListener("click", closeDetails);
+
+function openTitleDetails(movie) {
+  movieGrid.style.display = "none";
+  catalogueControls.style.display = "none";
+  catalogueCount.style.display = "none";
+  detailsPage.style.display = "block";
+
+  detailsTitle.textContent = movie.title;
+  detailsType.textContent = movie.type === "series"
+    ? `TV Series • ${movie.seasons} Seasons`
+    : movie.type === "documentary" ? "Documentary" : "Movie";
+
+  seasonList.innerHTML = "";
+  episodeList.innerHTML = "";
+
+  if (movie.type === "series" && movie.seasons) {
+    const heading = document.createElement("h3");
+    heading.textContent = "Select a Season";
+    heading.style.margin = "20px 0 12px";
+    seasonList.appendChild(heading);
+
+    for (let number = 1; number <= movie.seasons; number++) {
+      const button = document.createElement("button");
+      button.textContent = `Season ${number}`;
+      button.style.cssText =
+        "display:block;width:100%;padding:15px;margin:8px 0;background:#292116;color:#f5d58a;border:1px solid #d6ad58;border-radius:8px;text-align:left;font-size:16px;cursor:pointer;";
+
+      button.addEventListener("click", () => {
+        showSeasonEpisodes(movie, number);
+      });
+
+      seasonList.appendChild(button);
+    }
+  } else {
+    const info = document.createElement("p");
+    info.textContent = "Movie details and licensed viewing options will appear here.";
+    info.style.color = "#ccc";
+    seasonList.appendChild(info);
+  }
+}
+
+function showSeasonEpisodes(movie, seasonNumber) {
+  episodeList.innerHTML = "";
+
+  const heading = document.createElement("h3");
+  heading.textContent = `Season ${seasonNumber} Episodes`;
+  heading.style.color = "#d6ad58";
+  episodeList.appendChild(heading);
+
+  const episodes = movie.episodesBySeason?.[seasonNumber] || [];
+
+  if (episodes.length === 0) {
+    const message = document.createElement("p");
+    message.textContent =
+      "Episode information and licensed viewing links will be added here.";
+    message.style.cssText = "color:#ccc;margin-top:12px;";
+    episodeList.appendChild(message);
+    return;
+  }
+
+  episodes.forEach((episode, index) => {
+    const button = document.createElement("button");
+    button.textContent = episode.title || `Episode ${index + 1}`;
+    button.style.cssText =
+      "display:block;width:100%;padding:14px;margin:8px 0;background:#292116;color:white;border:1px solid #555;border-radius:8px;text-align:left;cursor:pointer;";
+
+    button.addEventListener("click", () => {
+      episodeList.querySelectorAll("p.episode-status").forEach(item => item.remove());
+
+      const message = document.createElement("p");
+      message.className = "episode-status";
+      message.textContent = episode.videoUrl
+        ? "Licensed episode playback is ready to be connected."
+        : "This episode does not have a viewing source yet.";
+      message.style.color = "#ccc";
+      episodeList.appendChild(message);
+    });
+
+    episodeList.appendChild(button);
+  });
+}
 
 function renderCatalogue() {
   const search = catalogueSearch.value.toLowerCase().trim();
@@ -799,7 +888,7 @@ function renderCatalogue() {
     const matchesSearch = movie.title.toLowerCase().includes(search);
     const matchesGroup = category === "all" || movie.group === category;
 
-            let matchesExplore = true;
+    let matchesExplore = true;
 
     if (activeExploreCategory === "Cartoons & Anime") {
       matchesExplore = movie.group === "animated";
@@ -814,13 +903,16 @@ function renderCatalogue() {
 
     return matchesSearch && matchesGroup && matchesExplore;
   });
-  
 
   movieGrid.innerHTML = "";
+  movieGrid.style.display = "grid";
 
   filteredMovies.forEach(movie => {
     const card = document.createElement("div");
     card.className = "movie";
+    card.style.cursor = "pointer";
+    card.setAttribute("role", "button");
+    card.tabIndex = 0;
 
     const title = document.createElement("h3");
     title.textContent = movie.title;
@@ -830,15 +922,26 @@ function renderCatalogue() {
     categoryLabel.textContent = movie.country || movie.group;
     categoryLabel.style.cssText = "color:#d4af37;font-size:12px;margin:0;";
 
-        card.appendChild(title);
+    card.appendChild(title);
     card.appendChild(categoryLabel);
 
     if (movie.type === "series") {
       const seasonLabel = document.createElement("p");
-      seasonLabel.textContent = `Season${movie.seasons === 1 ? "" : "s"}: ${movie.seasons}`;
-      seasonLabel.style.cssText = "color:#ffffff;font-size:12px;margin:6px 0 0;";
+      seasonLabel.textContent =
+        `Seasons: ${movie.seasons}`;
+      seasonLabel.style.cssText =
+        "color:#ffffff;font-size:12px;margin:6px 0 0;";
       card.appendChild(seasonLabel);
     }
+
+    card.addEventListener("click", () => openTitleDetails(movie));
+
+    card.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openTitleDetails(movie);
+      }
+    });
 
     movieGrid.appendChild(card);
   });
@@ -862,6 +965,14 @@ document.querySelectorAll(".category").forEach(button => {
     catalogueCategory.value = "all";
     catalogueSearch.value = "";
 
+    document.querySelectorAll(".category").forEach(item => {
+      item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    renderCatalogue();
+  });
+});
     document.querySelectorAll(".category").forEach(item => {
       item.classList.remove("active");
     });
