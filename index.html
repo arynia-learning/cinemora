@@ -503,7 +503,15 @@ function renderCatalogue() {
 
 catalogueSearch.addEventListener("input", renderCatalogue);
 catalogueCategory.addEventListener("change", renderCatalogue);
-
+document.querySelectorAll(".category").forEach(button => {
+  button.addEventListener("click", () => {
+    if (button.dataset.category === "Cartoons & Anime") {
+      catalogueCategory.value = "animated";
+      catalogueSearch.value = "";
+      renderCatalogue();
+    }
+  });
+});
 renderCatalogue();
   </script>
  </body>
