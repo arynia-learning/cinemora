@@ -338,6 +338,162 @@ nav a:hover{color:#d6ad58}
   }
 }
 
+/* CINEMORA — CLEAN STREAMING DESIGN */
+
+:root {
+  --cinemora-red: #e50914;
+  --cinemora-bg: #101010;
+  --cinemora-card: #1b1b1b;
+}
+
+body {
+  background: var(--cinemora-bg);
+  color: #f5f5f5;
+}
+
+header {
+  background: #090909;
+  border-bottom: 1px solid #242424;
+  padding: 18px 5%;
+}
+
+.logo,
+.profile-logo {
+  color: #fff !important;
+}
+
+nav a {
+  color: #d0d0d0;
+  transition: color .2s ease;
+}
+
+nav a:hover {
+  color: var(--cinemora-red);
+}
+
+.join,
+.hero-buttons button {
+  background: var(--cinemora-red);
+  color: #fff;
+  border: 0;
+  border-radius: 4px;
+}
+
+.hero {
+  min-height: 500px;
+  background: #101010;
+}
+
+.hero-backdrop {
+  background:
+    linear-gradient(90deg, #101010 5%, rgba(16,16,16,.8) 55%, rgba(16,16,16,.25)),
+    linear-gradient(0deg, #101010, transparent 65%);
+}
+
+.hero-content .tag {
+  color: #e50914;
+  letter-spacing: 2px;
+}
+
+#heroMoreInfo {
+  background: #333;
+  color: #fff;
+  border: 0;
+}
+
+.section {
+  padding: 28px 5%;
+}
+
+.section h2 {
+  font-size: 22px;
+}
+
+.gold,
+.category,
+.movie {
+  color: #f5f5f5 !important;
+}
+
+.categories .category {
+  background: #202020 !important;
+  border: 1px solid #333 !important;
+  color: #eee !important;
+  border-radius: 6px;
+  min-height: 58px !important;
+}
+
+.categories .category:hover,
+.categories .category.active {
+  background: #333 !important;
+  border-color: #e50914 !important;
+}
+
+.movie-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.movie {
+  background: #1b1b1b !important;
+  border: 1px solid #292929 !important;
+  border-radius: 5px;
+  min-height: 190px;
+  aspect-ratio: 2 / 3;
+  padding: 14px;
+  transition: transform .2s ease, border-color .2s ease;
+}
+
+.movie:hover {
+  transform: scale(1.03);
+  border-color: #e50914 !important;
+}
+
+.movie p {
+  color: #aaa !important;
+}
+
+.search-area input,
+.catalogue-controls input,
+.catalogue-controls select {
+  background: #202020;
+  border: 1px solid #383838;
+  color: white;
+  border-radius: 5px;
+}
+
+.profile-screen {
+  background: #101010;
+}
+
+.profile-avatar {
+  background: #242424;
+  border: 1px solid #444;
+  color: white;
+}
+
+.profile-actions button {
+  background: #242424;
+  border: 1px solid #444;
+  color: white;
+}
+
+#detailsPage {
+  background: #181818 !important;
+  border: 1px solid #333 !important;
+}
+
+@media (max-width: 600px) {
+  .movie-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero {
+    min-height: 420px;
+    padding: 60px 6%;
+  }
+}
+
 </style>
 </head>
  
