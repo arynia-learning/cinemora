@@ -790,22 +790,8 @@ function renderCatalogue() {
     const matchesSearch = movie.title.toLowerCase().includes(search);
     const matchesGroup = category === "all" || movie.group === category;
 
-        let matchesExplore = true;
+            let matchesExplore = true;
 
-    if (activeExploreCategory === "Cartoons & Anime") {
-      matchesExplore = movie.group === "animated";
-    } else if (activeExploreCategory === "Documentaries") {
-      matchesExplore = movie.type === "documentary";
-    } else if (countryGroups[activeExploreCategory]) {
-      const country = (movie.country || "").toLowerCase();
-      matchesExplore = countryGroups[activeExploreCategory].some(name =>
-        country.includes(name)
-      );
-    }
-
-
-
-  : "";
     if (activeExploreCategory === "Cartoons & Anime") {
       matchesExplore = movie.group === "animated";
     } else if (activeExploreCategory === "Documentaries") {
@@ -818,6 +804,7 @@ function renderCatalogue() {
     }
 
     return matchesSearch && matchesGroup && matchesExplore;
+  });
   });
 
   movieGrid.innerHTML = "";
