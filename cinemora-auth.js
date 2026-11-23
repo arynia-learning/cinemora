@@ -552,7 +552,10 @@
 
     const profile = profiles[Number(number) - 1];
     if (!profile) return;
-
+         if (profile.name === "Main Profile") {
+      showMessage("The Main Profile cannot be deleted.");
+      return;
+    }
     if (!confirm(`Delete the ${profile.name} profile?`)) return;
 
     const { error } = await supabase
