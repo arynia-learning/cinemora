@@ -794,6 +794,14 @@ function renderCatalogue() {
 const categoryLabel = document.createElement("p");
 const seriesInfo = movie.type === "series"
   ? `Season${movie.seasons === 1 ? "" : "s"}: ${movie.seasons}`
+  if (seriesInfo) {
+  const seasonLabel = document.createElement("p");
+  seasonLabel.textContent = seriesInfo;
+  seasonLabel.style.cssText = "color:#ffffff;font-size:12px;margin:6px 0 0;";
+  card.appendChild(seasonLabel);
+}
+
+
   : "";
     if (activeExploreCategory === "Cartoons & Anime") {
       matchesExplore = movie.group === "animated";
