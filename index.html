@@ -785,7 +785,7 @@ function renderCatalogue() {
 
   filteredMovies.forEach(movie => {
     const card = document.createElement("div");
-    card.style.cssText = "background:#181818;padding:18px;border-radius:10px;border:1px solid #333;color:white;";
+    card.className = "movie";
 
     const title = document.createElement("h3");
     title.textContent = movie.title;
