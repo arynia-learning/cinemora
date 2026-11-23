@@ -977,24 +977,20 @@ function renderCatalogue() {
     const matchesSearch = movie.title.toLowerCase().includes(search);
     const matchesGroup = category === "all" || movie.group === category;
 
-    let matchesExplore = true;
-        } else if (activeExploreCategory === "Documentaries") {
-      matchesExplore = movie.type === "documentary";
-    } else if (activeExploreCategory === "People & Legends") {
-      matchesExplore = movie.collection === "people-legends";
-    } else if (countryGroups[activeExploreCategory]) {
+        let matchesExplore = true;
 
     if (activeExploreCategory === "Cartoons & Anime") {
       matchesExplore = movie.group === "animated";
     } else if (activeExploreCategory === "Documentaries") {
       matchesExplore = movie.type === "documentary";
+    } else if (activeExploreCategory === "People & Legends") {
+      matchesExplore = movie.collection === "people-legends";
     } else if (countryGroups[activeExploreCategory]) {
       const country = (movie.country || "").toLowerCase();
       matchesExplore = countryGroups[activeExploreCategory].some(name =>
         country.includes(name)
       );
     }
-
     return matchesSearch && matchesGroup && matchesExplore;
   });
 
