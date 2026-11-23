@@ -330,10 +330,7 @@
 
     if (profiles.length === 0) {
       const defaults = [
-        { name: "Main Profile", avatar_emoji: "👑", sort_order: 1 },
-        { name: "Kids", avatar_emoji: "🧸", is_kids: true, sort_order: 2 },
-        { name: "Family", avatar_emoji: "👨‍👩‍👧", sort_order: 3 },
-        { name: "Guest", avatar_emoji: "👤", sort_order: 4 }
+        { name: "Main Profile", avatar_emoji: "👑", sort_order: 1 }
       ];
 
       const { error: insertError } = await supabase
