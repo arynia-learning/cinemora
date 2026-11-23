@@ -197,7 +197,56 @@ nav a:hover{color:#d6ad58}
 .profile-screen.show {
   display: flex;
 }
-  /* CINEMORA SIGNATURE INTRO */
+  /* CINEMORA LETTER REVEAL */
+.cinemora-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #050505;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: introExit 0.8s ease 3.5s forwards;
+}
+
+.intro-logo {
+  display: flex;
+  gap: 2px;
+  color: #f5f5f5;
+  font-size: clamp(30px, 9vw, 65px);
+  font-weight: 900;
+  letter-spacing: 5px;
+}
+
+.intro-logo span {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: letterAppear 0.45s ease forwards;
+}
+
+.intro-logo span:nth-child(1) { animation-delay: 0.2s; }
+.intro-logo span:nth-child(2) { animation-delay: 0.4s; }
+.intro-logo span:nth-child(3) { animation-delay: 0.6s; }
+.intro-logo span:nth-child(4) { animation-delay: 0.8s; }
+.intro-logo span:nth-child(5) { animation-delay: 1s; }
+.intro-logo span:nth-child(6) { animation-delay: 1.2s; }
+.intro-logo span:nth-child(7) { animation-delay: 1.4s; }
+.intro-logo span:nth-child(8) { animation-delay: 1.6s; }
+
+@keyframes letterAppear {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes introExit {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
 .cinemora-intro {
   position: fixed;
   inset: 0;
