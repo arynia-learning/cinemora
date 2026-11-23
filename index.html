@@ -662,17 +662,43 @@ function searchMovies() {
 { id: "CIN-0520", title: "RRR: Behind & Beyond", group: "main" }];
  const movieGrid = document.getElementById("movieGrid");
 const catalogueSearch = document.getElementById("catalogueSearch");
-const catalogueCategory = document.getElementById("catalogueCategory");
+const catalogueCategory = document.getElementById("
+
 const catalogueCount = document.getElementById("catalogueCount");
+let activeExploreCategory = "all";
 
 function renderCatalogue() {
   const search = catalogueSearch.value.toLowerCase().trim();
   const category = catalogueCategory.value;
 
+  const countryGroups = {
+    "African Cinema": ["nigeria", "ghana", "south africa", "kenya", "malawi", "rwanda", "somalia", "tanzania", "uganda"],
+    "Hollywood": ["usa", "united states"],
+    "Bollywood": ["india"],
+    "Korean": ["korea", "south korea"],
+    "Chinese": ["china"],
+    "Japanese": ["japan"],
+    "French": ["france"]
+  };
+
   const filteredMovies = cinemoraTitles.filter(movie => {
     const matchesSearch = movie.title.toLowerCase().includes(search);
-    const matchesCategory = category === "all" || movie.group === category;
-    return matchesSearch && matchesCategory;
+    const matchesGroup = category === "all" || movie.group === category;
+
+    let matchesExplore = true;
+
+    if (activeExploreCategory === "Cartoons & Anime") {
+      matchesExplore = movie.group === "animated";
+    } else if (activeExploreCategory === "Documentaries") {
+      matchesExplore = movie.type === "documentary";
+    } else if (countryGroups[activeExploreCategory]) {
+      const country = (movie.country || "").toLowerCase();
+      matchesExplore = countryGroups[activeExploreCategory].some(name =>
+        country.includes(name)
+      );
+    }
+
+    return matchesSearch && matchesGroup && matchesExplore;
   });
 
   movieGrid.innerHTML = "";
@@ -686,7 +712,7 @@ function renderCatalogue() {
     title.style.cssText = "font-size:15px;margin:0 0 10px;";
 
     const categoryLabel = document.createElement("p");
-    categoryLabel.textContent = movie.group;
+    categoryLabel.textContent = movie.country || movie.group;
     categoryLabel.style.cssText = "color:#d4af37;font-size:12px;margin:0;";
 
     card.appendChild(title);
@@ -698,17 +724,28 @@ function renderCatalogue() {
 }
 
 catalogueSearch.addEventListener("input", renderCatalogue);
-catalogueCategory.addEventListener("change", renderCatalogue);
+
+catalogueCategory.addEventListener("change", () => {
+  activeExploreCategory = "all";
+  document.querySelectorAll(".category").forEach(button => {
+    button.classList.remove("active");
+  });
+  renderCatalogue();
+});
+
 document.querySelectorAll(".category").forEach(button => {
   button.addEventListener("click", () => {
-    if (button.dataset.category === "Cartoons & Anime") {
-      catalogueCategory.value = "animated";
-      catalogueSearch.value = "";
-      renderCatalogue();
-    }
+    activeExploreCategory = button.dataset.category;
+    catalogueCategory.value = "all";
+    catalogueSearch.value = "";
+
+    document.querySelectorAll(".category").forEach(item => {
+      item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    renderCatalogue();
   });
 });
+
 renderCatalogue();
-  </script>
- </body>
-</html>
