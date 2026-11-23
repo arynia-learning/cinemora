@@ -771,7 +771,8 @@ function searchMovies() {
 
 cinemoraTitles.forEach(movie => {
   const seriesInfo = seriesDataById[movie.id];
-  if (seriesInfo) Object.assign(movie, 
+  if (seriesInfo) Object.assign(movie, seriesInfo);
+});
 const detailsPage = document.getElementById("detailsPage");
 const detailsTitle = document.getElementById("detailsTitle");
 const detailsType = document.getElementById("detailsType");
