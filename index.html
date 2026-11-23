@@ -790,16 +790,19 @@ function renderCatalogue() {
     const matchesSearch = movie.title.toLowerCase().includes(search);
     const matchesGroup = category === "all" || movie.group === category;
 
-    let matchesExplore = true;
-const categoryLabel = document.createElement("p");
-const seriesInfo = movie.type === "series"
-  ? `Season${movie.seasons === 1 ? "" : "s"}: ${movie.seasons}`
-  if (seriesInfo) {
-  const seasonLabel = document.createElement("p");
-  seasonLabel.textContent = seriesInfo;
-  seasonLabel.style.cssText = "color:#ffffff;font-size:12px;margin:6px 0 0;";
-  card.appendChild(seasonLabel);
-}
+        let matchesExplore = true;
+
+    if (activeExploreCategory === "Cartoons & Anime") {
+      matchesExplore = movie.group === "animated";
+    } else if (activeExploreCategory === "Documentaries") {
+      matchesExplore = movie.type === "documentary";
+    } else if (countryGroups[activeExploreCategory]) {
+      const country = (movie.country || "").toLowerCase();
+      matchesExplore = countryGroups[activeExploreCategory].some(name =>
+        country.includes(name)
+      );
+    }
+
 
 
   : "";
