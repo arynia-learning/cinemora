@@ -829,7 +829,119 @@ function openTitleDetails(movie) {
   }
 }
 
-function showSeasonEpisodes(movie, seasonNumber) {
+  async function showSeasonEpisodes(movie, seasonNumber) {
+  const episodeList = document.getElementById("episodeList");
+
+  episodeList.innerHTML = `
+    <h3 style="color:#d6ad58;">Season ${seasonNumber}</h3>
+    <p style="color:#ccc;">Loading episodes...</p>
+  `;
+
+  try {
+    if (!window.cinemoraEpisodeCache) {
+      window.cinemoraEpisodeCache = {};
+    }
+
+    const cacheKey = `${movie.title}-${seasonNumber}`;
+    let episodes = window.cinemoraEpisodeCache[cacheKey];
+
+    if (!episodes) {
+      const searchResponse = await fetch(
+        `https://api.tvmaze.com/search/shows?q=${encodeURIComponent(movie.title)}`
+      );
+
+      if (!searchResponse.ok) {
+        throw new Error("Could not search for this series.");
+      }
+
+      const searchResults = await searchResponse.json();
+
+      const normalize = value =>
+        String(value || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+
+      const match = searchResults.find(
+        item => normalize(item.show.name) === normalize(movie.title)
+      );
+
+      if (!match) {
+        throw new Error("We could not find an exact series match.");
+      }
+
+      const episodeResponse = await fetch(
+        `https://api.tvmaze.com/shows/${match.show.id}/episodes`
+      );
+
+      if (!episodeResponse.ok) {
+        throw new Error("Could not load the episodes.");
+      }
+
+      const allEpisodes = await episodeResponse.json();
+
+      episodes = allEpisodes.filter(
+        episode => episode.season === Number(seasonNumber)
+      );
+
+      window.cinemoraEpisodeCache[cacheKey] = episodes;
+    }
+
+    if (!episodes.length) {
+      episodeList.innerHTML =
+        '<p style="color:#ccc;">No episode information is available for this season yet.</p>';
+      return;
+    }
+
+    episodeList.innerHTML = "";
+
+    episodes.forEach(episode => {
+      const card = document.createElement("div");
+
+      card.style.cssText =
+        "background:#211b12;border:1px solid #d6ad58;border-radius:8px;padding:14px;margin:10px 0;";
+
+      const heading = document.createElement("h4");
+      heading.style.color = "#d6ad58";
+      heading.textContent =
+        `Episode ${episode.number}: ${episode.name || "Untitled"}`;
+
+      const summary = document.createElement("p");
+      summary.style.color = "#ccc";
+      summary.style.margin = "8px 0";
+
+      const temporary = document.createElement("div");
+      temporary.innerHTML = episode.summary || "";
+      summary.textContent =
+        temporary.textContent || "No episode description available.";
+
+      const link = document.createElement("a");
+      link.href = episode.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = "View episode information";
+      link.style.color = "#d6ad58";
+
+      card.appendChild(heading);
+      card.appendChild(summary);
+      card.appendChild(link);
+
+      episodeList.appendChild(card);
+    });
+
+    const credit = document.createElement("p");
+    credit.style.cssText = "color:#888;font-size:12px;margin-top:15px;";
+    credit.textContent = "Episode information provided by TVmaze.";
+    episodeList.appendChild(credit);
+
+  } catch (error) {
+    episodeList.innerHTML = `
+      <p style="color:#ccc;">
+        ${error.message}
+      </p>
+      <p style="color:#aaa;">
+        You can try again later.
+      </p>
+    `;
+  }
+}
   episodeList.innerHTML = "";
 
   const heading = document.createElement("h3");
