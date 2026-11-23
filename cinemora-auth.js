@@ -412,8 +412,9 @@
 
     if (profileScreen) profileScreen.style.display = "none";
     if (siteContent) siteContent.style.display = "block";
-
+     
     addToolbar();
+    loadContinueWatching();
   }
 
   function addToolbar() {
@@ -615,7 +616,77 @@
       showAuth();
     }
   }
+  async function loadContinueWatching() {
+    const site = document.getElementById("siteContent");
+    if (!site || !activeProfile) return;
 
+    let section = document.getElementById("cinemoraContinueWatching");
+
+    if (!section) {
+      section = document.createElement("section");
+      section.id = "cinemoraContinueWatching";
+      section.style.cssText =
+        "padding:20px;color:white;background:#111;margin:20px 0;border-radius:12px;";
+
+      site.prepend(section);
+    }
+
+    section.innerHTML = `
+      <h2 style="color:#d6ad58;">Continue Watching</h2>
+      <p>Loading your viewing history...</p>
+    `;
+
+    const { data, error } = await supabase
+      .from("cinemora_watch_history")
+      .select("*")
+      .eq("profile_id", activeProfile.id)
+      .order("last_watched_at", { ascending: false })
+      .limit(20);
+
+    if (error) {
+      section.innerHTML =
+        "<h2>Continue Watching</h2><p>Unable to load viewing history.</p>";
+      console.error(error);
+      return;
+    }
+
+    const unfinished = (data || []).filter(item =>
+      !item.duration_seconds ||
+      item.progress_seconds < item.duration_seconds
+    );
+
+    if (!unfinished.length) {
+      section.innerHTML = `
+        <h2 style="color:#d6ad58;">Continue Watching</h2>
+        <p>Your recently watched movies and series will appear here.</p>
+      `;
+      return;
+    }
+
+    section.innerHTML = `
+      <h2 style="color:#d6ad58;">Continue Watching</h2>
+      ${unfinished.map(item => {
+        const progress = item.duration_seconds
+          ? Math.min(100, Math.round(
+              item.progress_seconds / item.duration_seconds * 100
+            ))
+          : 0;
+
+        return `
+          <div style="padding:12px 0;border-bottom:1px solid #333;">
+            <strong>${item.title}</strong>
+            <p style="font-size:12px;color:#aaa;">
+              ${item.content_type}
+            </p>
+            <div style="height:5px;background:#333;border-radius:5px;">
+              <div style="height:5px;width:${progress}%;background:#d6ad58;border-radius:5px;"></div>
+            </div>
+            <small style="color:#aaa;">${progress}% watched</small>
+          </div>
+        `;
+      }).join("")}
+    `;
+  }
   start();
 })();
 
