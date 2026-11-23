@@ -978,6 +978,11 @@ function renderCatalogue() {
     const matchesGroup = category === "all" || movie.group === category;
 
     let matchesExplore = true;
+        } else if (activeExploreCategory === "Documentaries") {
+      matchesExplore = movie.type === "documentary";
+    } else if (activeExploreCategory === "People & Legends") {
+      matchesExplore = movie.collection === "people-legends";
+    } else if (countryGroups[activeExploreCategory]) {
 
     if (activeExploreCategory === "Cartoons & Anime") {
       matchesExplore = movie.group === "animated";
