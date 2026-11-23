@@ -356,7 +356,79 @@ nav a:hover{color:#d6ad58}
   }
 
   activeProfile.textContent = "👤 " + profileName;
+  const defaultProfiles = [
+  { name: "Main Profile", emoji: "👑" },
+  { name: "Kids", emoji: "🧸" },
+  { name: "Family", emoji: "👨‍👩‍👧" },
+  { name: "Guest", emoji: "👤" }
+];
+
+let cinemoraProfiles = JSON.parse(
+  localStorage.getItem("cinemoraProfiles") || "null"
+) || defaultProfiles;
+
+function saveProfiles() {
+  localStorage.setItem("cinemoraProfiles", JSON.stringify(cinemoraProfiles));
 }
+
+function renderProfiles() {
+  const list = document.querySelector(".profile-list");
+  list.innerHTML = "";
+
+  cinemoraProfiles.forEach(profile => {
+    const button = document.createElement("button");
+    button.className = "profile-card";
+    button.onclick = () => selectProfile(profile.name);
+
+    const avatar = document.createElement("div");
+    avatar.className = "profile-avatar";
+    avatar.textContent = profile.emoji;
+
+    button.append(avatar, document.createTextNode(profile.name));
+    list.appendChild(button);
+  });
+}
+
+function addProfile() {
+  const name = prompt("Enter the new profile name:");
+  if (!name || !name.trim()) return;
+
+  const emoji = prompt("Choose an emoji for this profile:", "👤");
+  if (emoji === null) return;
+
+  cinemoraProfiles.push({
+    name: name.trim(),
+    emoji: emoji.trim() || "👤"
+  });
+
+  saveProfiles();
+  renderProfiles();
+}
+
+function editProfiles() {
+  const choices = cinemoraProfiles
+    .map((profile, index) => `${index + 1}. ${profile.name}`)
+    .join("\n");
+
+  const choice = prompt("Which profile do you want to edit?\n" + choices);
+  const index = Number(choice) - 1;
+
+  if (!Number.isInteger(index) || index < 0 || index >= cinemoraProfiles.length) return;
+
+  const name = prompt("Enter the new profile name:", cinemoraProfiles[index].name);
+  if (!name || !name.trim()) return;
+
+  const emoji = prompt("Enter the new emoji:", cinemoraProfiles[index].emoji);
+  if (emoji === null) return;
+
+  cinemoraProfiles[index].name = name.trim();
+  cinemoraProfiles[index].emoji = emoji.trim() || "👤";
+
+  saveProfiles();
+  renderProfiles();
+}
+
+renderProfiles();
 function searchMovies() {
   const input = document.getElementById("search").value.toLowerCase();
   const movies = document.querySelectorAll(".movie");
