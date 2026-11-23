@@ -194,7 +194,38 @@ nav a:hover{color:#d6ad58}
 </head>
  
 <body>
+<div class="profile-screen show" id="profileScreen">
+  <div class="profile-logo">CINEMORA</div>
 
+  <h1>Who's Watching?</h1>
+
+  <div class="profile-list">
+    <button class="profile-card" onclick="selectProfile('Main Profile')">
+      <div class="profile-avatar">👑</div>
+      Main Profile
+    </button>
+
+    <button class="profile-card" onclick="selectProfile('Kids')">
+      <div class="profile-avatar">🧸</div>
+      Kids
+    </button>
+
+    <button class="profile-card" onclick="selectProfile('Family')">
+      <div class="profile-avatar">👨‍👩‍👧</div>
+      Family
+    </button>
+
+    <button class="profile-card" onclick="selectProfile('Guest')">
+      <div class="profile-avatar">👤</div>
+      Guest
+    </button>
+  </div>
+
+  <div class="profile-actions">
+    <button type="button">Add Profile +</button>
+    <button type="button">Edit Profiles</button>
+  </div>
+</div>
  
 <header>
   <div class="logo">CINEMORA</div>
