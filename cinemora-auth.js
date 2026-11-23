@@ -1,3 +1,4 @@
+
 // ==================================
 // CINEMORA ACCOUNT & PROFILE SYSTEM
 // ==================================
@@ -12,6 +13,7 @@
 
   let currentUser = null;
   let profiles = [];
+  let activeProfile = null;
 
   const style = document.createElement("style");
   style.textContent = `
@@ -26,6 +28,7 @@
       justify-content: center;
       padding: 20px;
       font-family: Arial, sans-serif;
+      overflow-y: auto;
     }
     .cin-auth-box {
       width: 100%;
@@ -59,10 +62,16 @@
       font-weight: bold;
       cursor: pointer;
     }
+    .cin-auth-box .secondary {
+      background: #29231b;
+      color: white;
+      border: 1px solid #d6ad58;
+    }
     .cin-auth-message {
       color: #d6ad58;
       font-size: 14px;
       margin: 12px 0;
+      overflow-wrap: anywhere;
     }
     .cin-profile-button {
       display: inline-flex;
@@ -81,6 +90,30 @@
       font-size: 40px;
       margin-bottom: 8px;
     }
+    #cinemoraToolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      padding: 10px;
+      background: #111;
+      border-bottom: 1px solid #765b2c;
+    }
+    #cinemoraToolbar button {
+      background: #302820;
+      color: white;
+      border: 1px solid #d6ad58;
+      border-radius: 6px;
+      padding: 9px 11px;
+    }
+    #cinemoraNotifications {
+      display: none;
+      background: #171717;
+      color: white;
+      padding: 18px;
+      border: 1px solid #d6ad58;
+      margin: 10px;
+    }
   `;
   document.head.appendChild(style);
 
@@ -93,14 +126,17 @@
     if (box) box.textContent = message;
   }
 
-  function showAuth() {
-    screen.style.display = "flex";
-
+  function hideSite() {
     const profileScreen = document.getElementById("profileScreen");
     const siteContent = document.getElementById("siteContent");
 
     if (profileScreen) profileScreen.style.display = "none";
     if (siteContent) siteContent.style.display = "none";
+  }
+
+  function showAuth() {
+    screen.style.display = "flex";
+    hideSite();
 
     screen.innerHTML = `
       <div class="cin-auth-box">
@@ -108,13 +144,20 @@
         <h2>Welcome to CINEMORA</h2>
         <p>Sign in or create your account.</p>
 
-        <input id="cinEmail" type="email" placeholder="Email address">
-        <input id="cinPassword" type="password" placeholder="Password">
+        <input id="cinEmail" type="email"
+          placeholder="Email address" autocomplete="email">
+
+        <input id="cinPassword" type="password"
+          placeholder="Password" autocomplete="current-password">
 
         <div>
           <button id="cinSignIn">Sign In</button>
           <button id="cinSignUp">Create Account</button>
         </div>
+
+        <button class="secondary" id="cinForgot">
+          Forgot Password?
+        </button>
 
         <p class="cin-auth-message"></p>
       </div>
@@ -122,6 +165,7 @@
 
     document.getElementById("cinSignIn").onclick = signIn;
     document.getElementById("cinSignUp").onclick = signUp;
+    document.getElementById("cinForgot").onclick = forgotPassword;
   }
 
   function getCredentials() {
@@ -141,7 +185,7 @@
 
     showMessage("Creating your account...");
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -150,9 +194,19 @@
     });
 
     if (error) {
-      showMessage(error.message);
+      if (/already registered|already exists/i.test(error.message)) {
+        showMessage("This email already has an account. Please sign in or use Forgot Password.");
+      } else {
+        showMessage(error.message);
+      }
+      return;
+    }
+
+    if (data.session) {
+      currentUser = data.user;
+      await loadProfiles();
     } else {
-      showMessage("Account created. Check your email if confirmation is required.");
+      showMessage("Account request received. Check your email to confirm your account.");
     }
   }
 
@@ -180,6 +234,85 @@
     await loadProfiles();
   }
 
+  async function forgotPassword() {
+    const email = document.getElementById("cinEmail").value.trim();
+
+    if (!email) {
+      showMessage("Enter your account email address first.");
+      return;
+    }
+
+    showMessage("Requesting password reset...");
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + window.location.pathname
+    });
+
+    if (error) {
+      showMessage(error.message);
+      return;
+    }
+
+    showMessage("If the account exists, a password reset email will be sent. Check your inbox and spam folder.");
+  }
+
+  function showUpdatePassword() {
+    screen.style.display = "flex";
+    hideSite();
+
+    screen.innerHTML = `
+      <div class="cin-auth-box">
+        <div class="cin-auth-logo">CINEMORA</div>
+        <h2>Choose a New Password</h2>
+
+        <input id="cinNewPassword" type="password"
+          placeholder="New password" autocomplete="new-password">
+
+        <input id="cinConfirmPassword" type="password"
+          placeholder="Confirm new password" autocomplete="new-password">
+
+        <button id="cinSavePassword">Save New Password</button>
+
+        <p class="cin-auth-message"></p>
+      </div>
+    `;
+
+    document.getElementById("cinSavePassword").onclick = saveNewPassword;
+  }
+
+  async function saveNewPassword() {
+    const password = document.getElementById("cinNewPassword").value;
+    const confirmPassword = document.getElementById("cinConfirmPassword").value;
+
+    if (password.length < 6) {
+      showMessage("Your password must contain at least 6 characters.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      showMessage("The passwords do not match.");
+      return;
+    }
+
+    showMessage("Updating your password...");
+
+    const { error } = await supabase.auth.updateUser({
+      password
+    });
+
+    if (error) {
+      showMessage(error.message);
+      return;
+    }
+
+    showMessage("Password updated successfully. Please sign in.");
+
+    await supabase.auth.signOut();
+    currentUser = null;
+
+    setTimeout(showAuth, 1200);
+  }
+
   async function loadProfiles() {
     const { data, error } = await supabase
       .from("cinemora_profiles")
@@ -188,6 +321,7 @@
       .order("sort_order");
 
     if (error) {
+      screen.style.display = "flex";
       showMessage(error.message);
       return;
     }
@@ -210,6 +344,7 @@
         })));
 
       if (insertError) {
+        screen.style.display = "flex";
         showMessage(insertError.message);
         return;
       }
@@ -222,17 +357,20 @@
 
   function renderProfiles() {
     screen.style.display = "flex";
+
     screen.innerHTML = `
       <div class="cin-auth-box">
         <div class="cin-auth-logo">CINEMORA</div>
         <h2>Who's Watching?</h2>
         <div id="cinProfileList"></div>
+
         <div>
           <button id="cinAddProfile">Add Profile +</button>
-          <button id="cinEditProfile">Edit Profile</button>
-          <button id="cinDeleteProfile">Delete Profile</button>
-          <button id="cinSignOut">Sign Out</button>
+          <button id="cinEditProfile" class="secondary">Edit Profile</button>
+          <button id="cinDeleteProfile" class="secondary">Delete Profile</button>
+          <button id="cinSignOut" class="secondary">Sign Out</button>
         </div>
+
         <p class="cin-auth-message"></p>
       </div>
     `;
@@ -263,7 +401,12 @@
   }
 
   function selectProfile(profile) {
+    activeProfile = profile;
     window.cinemoraActiveProfile = profile;
+
+    try {
+      localStorage.setItem("cinemoraActiveProfile", profile.id);
+    } catch (error) {}
 
     screen.style.display = "none";
 
@@ -273,17 +416,55 @@
     if (profileScreen) profileScreen.style.display = "none";
     if (siteContent) siteContent.style.display = "block";
 
-    let label = document.getElementById("activeProfile");
+    addToolbar();
+  }
 
-    if (!label) {
-      label = document.createElement("div");
-      label.id = "activeProfile";
-      label.style.cssText =
-        "color:#d6ad58;font-weight:bold;padding:12px;";
-      document.querySelector("header")?.appendChild(label);
+  function addToolbar() {
+    let toolbar = document.getElementById("cinemoraToolbar");
+
+    if (!toolbar) {
+      toolbar = document.createElement("div");
+      toolbar.id = "cinemoraToolbar";
+
+      const site = document.getElementById("siteContent");
+      if (site) {
+        site.prepend(toolbar);
+      } else {
+        document.body.prepend(toolbar);
+      }
     }
 
-    label.textContent = profile.avatar_emoji + " " + profile.name;
+    toolbar.innerHTML = `
+      <span id="cinToolbarProfile"></span>
+      <button id="cinSwitchProfile">Switch Profile</button>
+      <button id="cinNotifications">Notifications</button>
+      <button id="cinToolbarSignOut">Sign Out</button>
+    `;
+
+    document.getElementById("cinToolbarProfile").textContent =
+      activeProfile.avatar_emoji + " " + activeProfile.name;
+
+    document.getElementById("cinSwitchProfile").onclick = renderProfiles;
+    document.getElementById("cinToolbarSignOut").onclick = signOut;
+    document.getElementById("cinNotifications").onclick = toggleNotifications;
+
+    let panel = document.getElementById("cinemoraNotifications");
+
+    if (!panel) {
+      panel = document.createElement("div");
+      panel.id = "cinemoraNotifications";
+      panel.textContent =
+        "You're all caught up! New CINEMORA updates will appear here when notifications are connected.";
+      toolbar.after(panel);
+    }
+  }
+
+  function toggleNotifications() {
+    const panel = document.getElementById("cinemoraNotifications");
+    if (!panel) return;
+
+    panel.style.display =
+      panel.style.display === "block" ? "none" : "block";
   }
 
   async function addProfile() {
@@ -383,8 +564,23 @@
 
     currentUser = null;
     profiles = [];
+    activeProfile = null;
+    window.cinemoraActiveProfile = null;
+
+    const toolbar = document.getElementById("cinemoraToolbar");
+    const panel = document.getElementById("cinemoraNotifications");
+
+    if (toolbar) toolbar.remove();
+    if (panel) panel.remove();
+
     showAuth();
   }
+
+  supabase.auth.onAuthStateChange((event) => {
+    if (event === "PASSWORD_RECOVERY") {
+      showUpdatePassword();
+    }
+  });
 
   async function start() {
     const { data, error } = await supabase.auth.getSession();
@@ -404,3 +600,4 @@
 
   start();
 })();
+
