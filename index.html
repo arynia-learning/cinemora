@@ -821,8 +821,16 @@ function renderCatalogue() {
     categoryLabel.textContent = movie.country || movie.group;
     categoryLabel.style.cssText = "color:#d4af37;font-size:12px;margin:0;";
 
-    card.appendChild(title);
+        card.appendChild(title);
     card.appendChild(categoryLabel);
+
+    if (movie.type === "series") {
+      const seasonLabel = document.createElement("p");
+      seasonLabel.textContent = `Season${movie.seasons === 1 ? "" : "s"}: ${movie.seasons}`;
+      seasonLabel.style.cssText = "color:#ffffff;font-size:12px;margin:6px 0 0;";
+      card.appendChild(seasonLabel);
+    }
+
     movieGrid.appendChild(card);
   });
 
