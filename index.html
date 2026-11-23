@@ -1477,7 +1477,61 @@ document.querySelectorAll(".category").forEach(button => {
     
 
 renderCatalogue();
+// CINEMORA FEATURED BANNER
+const featuredMovies = cinemoraTitles.slice(0, 5);
 
+let featuredIndex = 0;
+
+const heroTitle = document.getElementById("heroTitle");
+const heroTag = document.getElementById("heroTag");
+const heroDescription = document.getElementById("heroDescription");
+const heroBackdrop = document.getElementById("heroBackdrop");
+const heroMoreInfo = document.getElementById("heroMoreInfo");
+const heroWatchNow = document.getElementById("heroWatchNow");
+const heroIndicators = document.getElementById("heroIndicators");
+
+function showFeaturedMovie(index) {
+  const movie = featuredMovies[index];
+
+  if (!movie) return;
+
+  heroTitle.textContent = movie.title;
+  heroTag.textContent = "CINEMORA FEATURED";
+  heroDescription.textContent =
+    "Discover " + movie.title + " and explore stories from around the world.";
+
+  heroBackdrop.style.background =
+    "linear-gradient(90deg, #090909, #292016, #090909)";
+
+  heroMoreInfo.onclick = () => openTitleDetails(movie);
+
+  heroIndicators.innerHTML = "";
+
+  featuredMovies.forEach((item, i) => {
+    const dot = document.createElement("button");
+    dot.textContent = i === index ? "●" : "○";
+    dot.style.cssText =
+      "background:none;border:none;color:#d4af37;font-size:18px;margin:5px;cursor:pointer;";
+    dot.setAttribute("aria-label", "Show " + item.title);
+    dot.onclick = () => {
+      featuredIndex = i;
+      showFeaturedMovie(i);
+    };
+    heroIndicators.appendChild(dot);
+  });
+}
+
+heroWatchNow.disabled = true;
+heroWatchNow.textContent = "PLAYBACK COMING SOON";
+
+if (featuredMovies.length > 0) {
+  showFeaturedMovie(featuredIndex);
+
+  setInterval(() => {
+    featuredIndex = (featuredIndex + 1) % featuredMovies.length;
+    showFeaturedMovie(featuredIndex);
+  }, 6000);
+}
 </script>
   <!-- CINEMORA SUPABASE CONNECTION -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
