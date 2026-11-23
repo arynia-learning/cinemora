@@ -24,8 +24,35 @@ nav a:hover{color:#d6ad58}
 .section{padding:25px 6%}
 .section h2{font-size:21px;margin-bottom:18px}
 .gold{color:#d6ad58}
-.categories{display:flex;gap:10px;flex-wrap:wrap}
-.category{border:1px solid #494033;color:#ddd;padding:11px 17px;border-radius:22px;font-size:13px}
+
+.categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 12px;
+}
+
+.category {
+  width: 100%;
+  min-height: 54px;
+  padding: 14px 10px;
+  border: 1px solid #6b5430;
+  border-radius: 10px;
+  background: #17130d;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  white-space: normal;
+}
+
+.category:hover,
+.category.active {
+  background: #d6ad58;
+  color: #090909;
+  border-color: #d6ad58;
+}
+
 .movie-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:15px}
 .movie{background:#171717;border:1px solid #292929;border-radius:7px;overflow:hidden;min-width:0}
 .poster{height:175px;background:linear-gradient(145deg,#292116,#111);display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;color:#d6ad58;font-weight:bold;font-size:17px}
