@@ -56,9 +56,13 @@ nav a:hover{color:#d6ad58}
 
 .d:linear-gradient(145deg,#292116,#111);display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;color:#d6ad58;font-weight:bold;font-size:17px}
 .movie p{padding:12px;font-size:13px;color:#eee}
-.movie small{display:block;color:#999;margin-top:5px}
-footer{border-top:1px solid #292929;padding:30px 6%;text-align:center;color:#888;font-size:12px;margin-top:40px}
-@media(max-width:600px){header{padding:17px 5%}.hero{padding:65px 6%;min-height:350px}nav{gap:12px}.section{padding:22px 5%}.movie-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.movie small{display:block;color:#999;margin
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+}
 /* CINEMORA CATEGORY BUTTON FIX */
 .categories {
   display: grid !important;
