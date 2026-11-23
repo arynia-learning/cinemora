@@ -334,6 +334,8 @@ nav a:hover{color:#d6ad58}
 </footer>
   </div>
 
+  
+<script>
   function selectProfile(profileName) {
   const profileScreen = document.getElementById("profileScreen");
   const siteContent = document.getElementById("siteContent");
@@ -354,8 +356,6 @@ nav a:hover{color:#d6ad58}
 
   activeProfile.textContent = "👤 " + profileName;
 }
-
-<script>
 function searchMovies() {
   const input = document.getElementById("search").value.toLowerCase();
   const movies = document.querySelectorAll(".movie");
