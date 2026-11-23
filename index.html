@@ -461,6 +461,47 @@ function searchMovies() {
   { id: "CIN-0325", title: "A Silent Voice", group: "animated" },
   { id: "CIN-0326", title: "Demon Slayer: Mugen Train", group: "animated" },
   { id: "CIN-0327", title: "One Piece Film: Red", group: "animated" }];
+ const movieGrid = document.getElementById("movieGrid");
+const catalogueSearch = document.getElementById("catalogueSearch");
+const catalogueCategory = document.getElementById("catalogueCategory");
+const catalogueCount = document.getElementById("catalogueCount");
+
+function renderCatalogue() {
+  const search = catalogueSearch.value.toLowerCase().trim();
+  const category = catalogueCategory.value;
+
+  const filteredMovies = cinemoraTitles.filter(movie => {
+    const matchesSearch = movie.title.toLowerCase().includes(search);
+    const matchesCategory = category === "all" || movie.group === category;
+    return matchesSearch && matchesCategory;
+  });
+
+  movieGrid.innerHTML = "";
+
+  filteredMovies.forEach(movie => {
+    const card = document.createElement("div");
+    card.style.cssText = "background:#181818;padding:18px;border-radius:10px;border:1px solid #333;color:white;";
+
+    const title = document.createElement("h3");
+    title.textContent = movie.title;
+    title.style.cssText = "font-size:15px;margin:0 0 10px;";
+
+    const categoryLabel = document.createElement("p");
+    categoryLabel.textContent = movie.group;
+    categoryLabel.style.cssText = "color:#d4af37;font-size:12px;margin:0;";
+
+    card.appendChild(title);
+    card.appendChild(categoryLabel);
+    movieGrid.appendChild(card);
+  });
+
+  catalogueCount.textContent = filteredMovies.length + " titles found";
+}
+
+catalogueSearch.addEventListener("input", renderCatalogue);
+catalogueCategory.addEventListener("change", renderCatalogue);
+
+renderCatalogue();
   </script>
  </body>
 </html>
