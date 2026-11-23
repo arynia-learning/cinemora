@@ -333,7 +333,26 @@ nav a:hover{color:#d6ad58}
   <p style="margin-top:8px">© 2026 CINEMORA. All rights reserved.</p>
 </footer>
   </div>
+function selectProfile(profileName) {
+  const profileScreen = document.getElementById("profileScreen");
+  const siteContent = document.getElementById("siteContent");
 
+  profileScreen.style.display = "none";
+  siteContent.style.display = "block";
+
+  let activeProfile = document.getElementById("activeProfile");
+
+  if (!activeProfile) {
+    activeProfile = document.createElement("div");
+    activeProfile.id = "activeProfile";
+    activeProfile.style.color = "#d6ad58";
+    activeProfile.style.fontWeight = "bold";
+    activeProfile.style.padding = "12px";
+    document.querySelector("header").appendChild(activeProfile);
+  }
+
+  activeProfile.textContent = "👤 " + profileName;
+}
 <script>
 function searchMovies() {
   const input = document.getElementById("search").value.toLowerCase();
