@@ -1606,14 +1606,14 @@ contentType.textContent = movie.type === "series"
   ? "Animation"
   : "Movie";
 contentType.style.cssText = "color:#fff;font-size:12px;margin:4px 0;";
-card.appendChild(contentType);
+
     const categoryLabel = document.createElement("p");
     categoryLabel.textContent = movie.country || "Country not listed";
     categoryLabel.style.cssText = "color:#d4af37;font-size:12px;margin:0;";
 
     card.appendChild(title);
     card.appendChild(categoryLabel);
-
+     card.appendChild(contentType);
     if (movie.type === "series") {
       const seasonLabel = document.createElement("p");
       seasonLabel.textContent =
