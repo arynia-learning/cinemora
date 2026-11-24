@@ -1669,7 +1669,9 @@ function showFeaturedMovie(index) {
     "Discover " + movie.title + " and explore stories from around the world.";
 
   heroBackdrop.style.background =
-    "linear-gradient(90deg, #090909, #292016, #090909)";
+  "linear-gradient(90deg, rgba(9,9,9,0.95), rgba(9,9,9,0.45)), #090909";
+heroBackdrop.style.backgroundSize = "cover";
+heroBackdrop.style.backgroundPosition = "center";
 
   heroMoreInfo.onclick = () => openTitleDetails(movie);
 
