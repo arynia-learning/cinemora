@@ -1578,6 +1578,7 @@ function renderCatalogue() {
   filteredMovies.forEach(movie => {
     const card = document.createElement("div");
     card.className = "movie";
+    card.style.cssText = "display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:8px;min-height:240px;height:auto;padding:12px;";
     card.style.cursor = "pointer";
     card.setAttribute("role", "button");
     card.tabIndex = 0;
