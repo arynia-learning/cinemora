@@ -1599,7 +1599,7 @@ if (posterPath) {
     title.style.cssText = "font-size:15px;margin:0 0 10px;";
 
     const categoryLabel = document.createElement("p");
-    categoryLabel.textContent = movie.country || movie.group;
+    categoryLabel.textContent = movie.country || "Country not listed";
     categoryLabel.style.cssText = "color:#d4af37;font-size:12px;margin:0;";
 
     card.appendChild(title);
