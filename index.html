@@ -1597,7 +1597,16 @@ if (posterPath) {
     const title = document.createElement("h3");
     title.textContent = movie.title;
     title.style.cssText = "font-size:15px;margin:0 0 10px;";
-
+    const contentType = document.createElement("p");
+contentType.textContent = movie.type === "series"
+  ? "TV Series"
+  : movie.type === "documentary"
+  ? "Documentary"
+  : movie.group === "animated"
+  ? "Animation"
+  : "Movie";
+contentType.style.cssText = "color:#fff;font-size:12px;margin:4px 0;";
+card.appendChild(contentType);
     const categoryLabel = document.createElement("p");
     categoryLabel.textContent = movie.country || "Country not listed";
     categoryLabel.style.cssText = "color:#d4af37;font-size:12px;margin:0;";
