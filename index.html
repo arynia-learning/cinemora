@@ -1381,7 +1381,18 @@ function openTitleDetails(movie) {
   detailsType.textContent = movie.type === "series"
     ? `TV Series • ${movie.seasons} Seasons`
     : movie.type === "documentary" ? "Documentary" : "Movie";
+    let countryInfo = document.getElementById("detailsCountry");
 
+if (!countryInfo) {
+  countryInfo = document.createElement("p");
+  countryInfo.id = "detailsCountry";
+  countryInfo.style.cssText = "color:#ccc;margin:10px 0;";
+  detailsPage.insertBefore(countryInfo, seasonList);
+}
+
+countryInfo.textContent = movie.country
+  ? "Country: " + movie.country
+  : "Country information unavailable";
   seasonList.innerHTML = "";
   episodeList.innerHTML = "";
 
