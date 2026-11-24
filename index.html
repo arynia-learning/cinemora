@@ -1612,8 +1612,9 @@ contentType.style.cssText = "color:#fff;font-size:12px;margin:4px 0;";
     categoryLabel.style.cssText = "color:#d4af37;font-size:12px;margin:0;";
 
     card.appendChild(title);
+    card.appendChild(contentType);
     card.appendChild(categoryLabel);
-     card.appendChild(contentType);
+     
     if (movie.type === "series") {
       const seasonLabel = document.createElement("p");
       seasonLabel.textContent =
